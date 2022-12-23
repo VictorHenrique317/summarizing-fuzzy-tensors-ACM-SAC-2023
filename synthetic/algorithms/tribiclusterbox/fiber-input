@@ -1,0 +1,113 @@
+#!/bin/sh
+
+if [ -z "$2" ]
+then
+    printf "Usage: $0 tensor free-dim [min-membership-degree]
+
+By default, min-membership-degree is the density of tensor.
+" 1>&2
+    exit 64
+fi
+
+if [ $2 -lt 1 ]
+then
+    printf "free-dim must be an integer greater or equal to 1.
+"
+    exit 64
+fi
+
+if [ -z "$3" ]
+then
+    min=$(gawk '
+{
+    for (i = 1; i < NF; ++i)
+        dim[i][$i]
+    sum += $NF }
+
+END {
+    for (i in dim)
+        sum /= length(dim[i])
+    print sum }' "$1")
+else
+    min=$3
+fi
+
+# if [ -x /usr/bin/gawk ]
+# then
+    gawk -v i=$2 -v min=$min '
+function dim_as_string() {
+    dim = ""
+    for (e in a[t])
+	dim = dim "," e
+    return substr(dim, 2) }
+
+i < NF && $NF > min {
+    if (i == 1) {
+	t = $2
+	j = 3 }
+    else {
+	t = $1
+	for (j = 2; j != i; ++j)
+	    t = t FS $j
+	++j }
+    for (; j != NF; ++j)
+	t = t FS $j
+    a[t][$i] }
+
+END {
+    if (i == 1) {
+	for (t in a)
+	    print dim_as_string() FS t
+	exit }
+    for (t in a) {
+	n = split(t, b)
+	printf "%s", b[1]
+	for (j = 2; j != i; ++j)
+	    printf "%s", FS b[j]
+	printf "%s", FS dim_as_string()
+	for (; j <= n; ++j)
+	    printf "%s", FS b[j]
+	print "" } }' "$1"
+#     exit
+# fi
+
+# awk -v i=$2 -v min=$min '
+# function print_unique() {
+#     m = split(substr(a[t], 2), c, FS)
+#     printf "%s", c[1]
+#     d[c[1]]
+#     for (k = 2; k <= m; ++k)
+# 	if (!(c[k] in d)) {
+# 	    printf ",%s", c[k]
+# 	    d[c[k]] }
+#     delete d }
+
+# i < NF && $NF > min {
+#     if (i == 1) {
+# 	t = $2
+# 	j = 3 }
+#     else {
+# 	t = $1
+# 	for (j = 2; j != i; ++j)
+# 	    t = t FS $j
+# 	++j }
+#     for (; j != NF; ++j)
+# 	t = t FS $j
+#     a[t] = a[t] FS $i }
+
+# END {
+#     if (i == 1) {
+# 	for (t in a) {
+# 	    print_unique()
+# 	    print FS t }
+# 	exit }
+#     for (t in a) {
+# 	n = split(t, b)
+# 	printf "%s", b[1]
+# 	for (j = 2; j != i; ++j)
+# 	    printf "%s", FS b[j]
+# 	printf "%s", FS
+# 	print_unique()
+# 	for (; j <= n; ++j)
+# 	    printf "%s", FS b[j]
+# 	print "" } }' "$1"

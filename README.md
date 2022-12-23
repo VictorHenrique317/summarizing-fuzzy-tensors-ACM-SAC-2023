@@ -1,6 +1,8 @@
 # Introduction
-This project aims to create a experimental environment to test and analyse different box clustering algorithms.
-With this code base it is possible to specify:
+This directory contains everything to rerun all the experiments described in the article "Summarizing Fuzzy Tensors with Sub-Tensors", presented at ACM SAC 2023.
+
+# Synthetic section
+The synthetic part of this project project (under synthetic/) aims to create a experimental environment to test and analyse different box clustering algorithms. With this code base it is possible to specify:
 
 - Tensor size.
 - Timeout for algorithm execution.
@@ -13,26 +15,38 @@ And then run the desired algorithms on these noised tensors. On each iteration o
 
 When the executions are finished the user can also extract and plot some metrics (RSS evolution, quality, execution time and number of found patterns) from the experiment files. The extracted (and plotted) data is an average across all iterations.
 
-# How to use
-The experimental environment can be configured in script/configs/configs.json:
+# Real section
+The real part of this project project (under real/) aims to create a experimental environment to test and analyse different box clustering algorithms. With this code base it is possible to specify:
 
-- configuration_name: The name of this experimental environment, multiple environments can be defined by creating multiple configuration files. To do so just copy configs.json and paste on the same directory with a different name and configuration_name.
+- Timeout for algorithm execution.
+
+Here only the timout time is configurable, as there is no synthetic tensor or noise adding. There is just one iteration and only the RSS evolution graphs are plotted, despite the other metrics also being generated. To take a look at the other metrics (after the algorithm is executed) go to real/iteration/{dataset_name}/output/u0.0/logs/{algorithm}.log, where: 
+
+- {dataset_name} is retweets for the 3D case and retweets-2d for the 2D case.
+- {algorithm} is the desired algorithm name.
+
+# How to use
+The two sections provided here are independent, configurations or/and executions made on one will not affect the other. To begin the experiments just run synthetic/script/main.py or real/script/main.py. The default configurations are the ones used in the article, the process can be slow so the default number of iterations is set to one on the synthetic section to facilitate reproduction (30 were done in the article).
+
+The experimental environment can be configured in synthetic/script/configs/configs.json and in real/script/configs/configs.json:
+
+- configuration_name (synthetic-only): The name of this experimental environment, multiple environments can be defined by creating multiple configuration files. To do so just copy configs.json and paste on the same directory with a different name and configuration_name.
 
 - timeout: Maximum time allowed for EACH algorithm execution (in seconds).
 
-- dataset_size: Size of the synthetic tensor.
+- dataset_size (synthetic-only): Size of the synthetic tensor.
 
-- pattern_size: Size of the synthetic patterns, all dimensions have equal size.
+- pattern_size (synthetic-only): Size of the synthetic patterns, all dimensions have equal size.
 
-- n_patterns: Number of randomly planted synthetic patterns.
+- n_patterns (synthetic-only): Number of randomly planted synthetic patterns.
 
-- correct_obs: Levels of applied noise (Inverse cumulative beta distribution), the lower the noisier.
+- correct_obs (synthetic-only): Levels of applied noise (Inverse cumulative beta distribution), the lower the noisier.
 
-- nb_iterations: Number of iterations.
+- nb_iterations (synthetic-only): Number of iterations.
 
-To specify which algorithms to use go to script/main.py and comment/uncomment lines 11 to 15. The experiments can be made by uncommenting line 18, and the data extraction/plotting can be made by uncommenting line 19.
+To specify which algorithms to use go to synthetic/script/main.py or real/script/main.py and comment/uncomment lines 11 to 15. The experiments can be made by uncommenting line 18, and the data extraction/plotting can be made by uncommenting line 19.
 
-The graphs are saved under post_analysis/{tensor_name}/ , and the averaged metrics in post_analysis/{tensor_name}/plotting_data/. It's possible to customize the y axis range for each different metric by changing lines 119, 124, 129 and 135 in script/base/controller.py.
+The graphs are saved under synthetic/post_analysis/{tensor_name}/ and real/post_analysis/{tensor_name}/. It's possible to customize the y axis range for each different metric by changing lines 119, 124, 129 and 135 in synthetic/script/base/controller.py.
 
 # Dependencies
 
@@ -41,6 +55,7 @@ Depedencies for python3 can be installed via pip, these are:
 - psutil.
 - scipy.
 - matplotlib.
+- sklearn.
 - pandas.
 
 Other:
@@ -49,9 +64,10 @@ Other:
 - MATLAB is required to run Cancer.
 
 # Setting up
+The compiled programs are provided for quick reproduction, but it's source code is also available for manual compilation if necessary:
 
-- It is necessary to compile NclusterBox and Tri/BiclusterBox before using it, to do so execute "make" in libs/nclusterbox and libs/tribiclusterbox.
+- To compile NclusterBox and Tri/BiclusterBox execute "make" in synthetic/algorithms/nclusterbox, synthetic/algorithms/tribiclusterbox and in real/algorithms/nclusterbox, real/algorithms/tribiclusterbox.
 
-- It is necessary to compile helper scripts in order to generate tensors and noise then, to do so execute "make" in libs/gennsets and libs/num-noise.
+- To compile the programs to generate tensors and to add noise to them execute "make" in synthetic/algorithms/gennsets, synthetic/algorithms/num-noise and in real/algorithms/gennsets, real/algorithms/num-noise.
 
-- It is necessary to give execution permission for the input readers (fiber-input and slice-input) in libs/nclusterbox and libs/tribiclusterbox.
+It is necessary to give execution permission for the input readers (fiber-input and slice-input) in synthetic/algorithms/nclusterbox, synthetic/algorithms/tribiclusterbox and in real/algorithms/nclusterbox, real/algorithms/tribiclusterbox.

@@ -1,0 +1,9 @@
+{
+  "configuration_name":"retweets",
+  "dataset": "retweets-sparser",
+  "timeout": 72000
+}
+ 
+ 
+ 
+ 

@@ -1,0 +1,61 @@
+*** DESCRIPTION ***
+
+gennset generates randomly positioned n-sets of any sizes in a null
+tensor of any sizes.
+
+
+*** USAGE ***
+
+Usage: gennsets dataset-sizes n-set-size-file [output-file]
+
+dataset-sizes is a string of n integers giving the sizes of the
+tensor, e.g., "4 8 16" (here n = 3, i.e., the generated tensor has
+three dimensions).
+
+n-set-size-file is a file listing, on every line, the sizes of an
+n-set. The number of dimensions, n, of these patterns must be the same
+as that of the dataset. E.g., to generate three 3-sets of sizes
+"2 2 2", "1 3 1" and "3 1 3", it must be:
+2 2 2
+1 3 1
+3 1 3
+
+output-file is a file where the n-sets are written. The patterns are
+always printed on the standard output too. This option is useful to
+not lose the patterns if gennsets' output is piped in another command
+(like num-noise).
+
+*** RETURN VALUES ***
+
+gennsets returns values which can be used when called from a
+script. They are conformed to sysexit.h.
+* 0 is returned when gennsets terminates successfully.
+* 64 is returned when gennsets was called incorrectly.
+* 74 is returned when data could not be read or written on the disk.
+
+
+*** OUTPUT DATA ***
+
+The elements in the patterns are integers between 1 and the size of
+the dimension. They are separated by commas and the dimensions are
+separated by spaces. Notice that this is the input format of the
+num-noise command.
+
+
+*** EXAMPLE ***
+
+A file sizes.data contains the sizes of three 3-sets. Experiment!
+
+
+*** BUGS ***
+
+Report bugs to <magicbanana@gmail.com>.
+
+
+*** COPYRIGHT ***
+
+Copyright 2009,2010,2011 Loïc Cerf (magicbanana@gmail.com) This is
+free software. You may redistribute copies of it under the terms of
+the GNU General Public License
+<http://www.gnu.org/licenses/gpl.html>. There is NO WARRANTY, to the
+extent permitted by law.
