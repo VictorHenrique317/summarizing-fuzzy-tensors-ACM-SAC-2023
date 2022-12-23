@@ -1,0 +1,79 @@
+*** DESCRIPTION ***
+
+num-noise turns a "perfect" Boolean tensor fuzzy.
+
+
+*** USAGE ***
+
+Usage: num-noise dataset-sizes nb-of-correct-observations-per-tuple nb-of-incorrect-observations-per-tuple
+
+dataset-sizes is a string of n integers giving the sizes of the
+tensor, e.g., "4 8 16" (here n = 3, i.e., the tensor has three
+dimensions).
+
+nb-of-correct-observations-per-tuple and
+nb-of-incorrect-observations-per-tuple are two double float
+values. They respectively fix the number of correct observations per
+tuples and the number of incorrect observations per tuples. The more
+correct observations and the less incorrect ones, the less noise
+introduced in the tensor. The probability distribution of the altered
+'0' (resp. '1') values is the inverse of the beta distribution with
+the parameters nb-of-correct-observations-per-tuple + 1 and
+nb-of-incorrect-observations-per-tuple + 1 (resp. the same parameters
+but swiched).
+
+
+*** RETURN VALUES ***
+
+num-noise returns values which can be used when called from a
+script. They are conformed to sysexit.h.
+* 0 is returned when num-noise terminates successfully.
+* 64 is returned when num-noise was called incorrectly.
+* 65 is returned when an input data line is not properly formatted.
+
+
+*** INPUT DATA ***
+
+The input data is read on the standard input. It is a list of n-sets
+(where the number of dimensions, n, must be the same as that of the
+dataset). The elements of these n-sets must be integers between 1 and
+the size of the dimension. They are separated by commas and the
+dimensions are separated by spaces.
+
+Notice that this input can be every n-tuple at '1'. It can also be the
+output of the gennsets command. The data-size option of gennset
+command would typically be the same as that of the num-noise
+command. Nevertheless, when calling num-noise, setting higher values
+may be interesting: it forces the fuzzy tensor to contain elements
+(those with the highest values) that are not involved in any pattern.
+
+
+*** OUTPUT DATA ***
+
+num-noise writes, on the standard output, every n-tuple in the tensor
+and its membership degree (between 0 and 1). Like in the input format,
+their n elements are space-separated integers between 1 and the size
+of the dimension. Notice that this is the input format of DCE and a
+particular case of that of multidupehack.
+
+
+*** EXAMPLE ***
+
+A typical use of num-noise taking as input gennsets' output:
+$ gennsets "8 8 8" sizes.data hidden-patterns | num-noise "8 8 8" 1 0 > fuzzy-tensor
+
+sizes.data must list, on every line, the sizes of some 3-sets.
+
+
+*** BUGS ***
+
+Report bugs to <magicbanana@gmail.com>.
+
+
+*** COPYRIGHT ***
+
+Copyright 2009,2010,2011 Loïc Cerf (magicbanana@gmail.com) This is
+free software. You may redistribute copies of it under the terms of
+the GNU General Public License
+<http://www.gnu.org/licenses/gpl.html>. There is NO WARRANTY, to the
+extent permitted by law.
