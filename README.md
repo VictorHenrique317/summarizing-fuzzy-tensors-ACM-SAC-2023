@@ -1,7 +1,7 @@
 # Introduction
 This directory contains everything to rerun all the experiments described in the article "Summarizing Fuzzy Tensors with Sub-Tensors", presented at ACM SAC 2023.
 
-# Synthetic section
+## Synthetic section
 The synthetic part of this project project (under synthetic/) aims to create a experimental environment to test and analyse different box clustering algorithms. With this code base it is possible to specify:
 
 - Tensor size.
@@ -15,7 +15,7 @@ And then run the desired algorithms on these noised tensors. On each iteration o
 
 When the executions are finished the user can also extract and plot some metrics (RSS evolution, quality, execution time and number of found patterns) from the experiment files. The extracted (and plotted) data is an average across all iterations.
 
-# Real section
+## Real section
 The real part of this project project (under real/) aims to create a experimental environment to test and analyse different box clustering algorithms. With this code base it is possible to specify:
 
 - Timeout for algorithm execution.
