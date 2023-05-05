@@ -17,7 +17,7 @@ from base.crisp_translator import CrispTranslator
 class Controller:
     def __init__(self) -> None:
         self.algorithms = []
-        self.__sorting_blacklist = ['nclusterbox', 'triclusterbox', 'nclusterboxnoperformanceimp']
+        self.__sorting_blacklist = ['nclusterbox', 'tribiclusterbox', 'nclusterboxnoperformanceimp']
         #self.__sorting_blacklist = []
         self.__configs_folder = "configs"
 
